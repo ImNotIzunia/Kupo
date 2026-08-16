@@ -143,11 +143,11 @@ Show-SourceMenu() {
     while true; do
         echo ""
 
-        echo ""
+        echo "=========================="
         echo ""
         echo "      Sources options"
         echo ""
-        echo ""
+        echo "=========================="
 
         echo "1. View"
         echo "2. Add a new source"
@@ -189,11 +189,11 @@ Show-LangMenu() {
     while true; do
         echo ""
 
-        echo ""
+        echo "=============================="
         echo ""
         echo "      Languages settings"
         echo ""
-        echo ""
+        echo "=============================="
 
         echo "1. French"
         echo "2. English"
