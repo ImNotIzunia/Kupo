@@ -65,7 +65,7 @@ Show-ConfigMenu() {
         case "$choice" in
             1)
                 clear
-                echo "[INFO] Show config"
+                Show-Config
                 ;;
             2)
                 clear
