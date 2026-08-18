@@ -159,15 +159,15 @@ Show-SourceMenu() {
         case "$choice" in
             1)
                 clear
-                echo "[INFO] Show sources"
+                Get-Source
                 ;;
             2)
                 clear
-                echo "[INFO] Add sources"
+                Add-Source
                 ;;
             3)
                 clear
-                echo "[INFO] Remove sources"
+                Delete-Source
                 ;;
             4)
                 clear

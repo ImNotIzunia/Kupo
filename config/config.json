@@ -5,6 +5,7 @@
     "size": ""
   },
   "backupFolder": "Backup",
-  "sources": [],
+  "sources": [
+  ],
   "language": "en"
 }
