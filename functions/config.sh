@@ -74,3 +74,22 @@ Show-Config() {
 
     echo "Language : $lang"
 }
+
+
+Save-Config() {
+    local config="$1"
+
+    if [[ -z "$config" ]]; then
+        echo "Error"
+        return 1
+    fi
+
+    if ! jq empty <<< "$config" 2>/dev/null; then
+        echo "Error"
+        return 1
+    fi
+
+    jq '.' <<< "$config" > "$CONFIG_PATH"
+    echo "success save"
+}
+
