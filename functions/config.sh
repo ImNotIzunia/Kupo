@@ -1,9 +1,18 @@
 #!/bin/bash
 
-Get-Config() {
-    CONFIG_FILE="$(dirname "$0")/config/config.json"
+Get-Config-Path() {
+    local script_dir
+    script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+    printf '%s/config/config.json\n' "$script_dir"
+}
 
-    if [[ ! -f "$CONFIG_FILE" ]]; then
+
+
+Get-Config() {
+    local config_file
+    config_file=$(Get-Config-Path)
+
+    if [[ ! -f "$config_file" ]]; then
         local default_config
         default_config=$(
             jq -n '{
@@ -18,17 +27,17 @@ Get-Config() {
             }'
         )
 
-        printf '%s\n' "$default_config" > "$CONFIG_FILE"
+        printf '%s\n' "$default_config" > "$config_file"
         printf '%s\n' "$default_config"
         return 0
     fi
 
-    if ! jq empty "$CONFIG_FILE" >/dev/null 2>&1; then
+    if ! jq empty "$config_file" >/dev/null 2>&1; then
         echo "failed"
         return 1
     fi
 
-    cat "$CONFIG_FILE"
+    cat "$config_file"
 }
 
 
@@ -78,6 +87,9 @@ Show-Config() {
 
 Save-Config() {
     local config="$1"
+    local config_file
+
+    config_file=$(Get-Config-Path)
 
     if [[ -z "$config" ]]; then
         echo "Error"
@@ -89,7 +101,11 @@ Save-Config() {
         return 1
     fi
 
-    jq '.' <<< "$config" > "$CONFIG_PATH"
+    if ! jq '.' <<<"$config" >"$config_file"; then
+        echo "Error while saving"
+        return 1
+    fi
+
     echo "success save"
 }
 
