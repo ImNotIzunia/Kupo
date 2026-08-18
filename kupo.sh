@@ -11,4 +11,4 @@ source "$(dirname "$0")/functions/sources.sh"
 #Show-MainMenu
 
 Get-Source
-Add-Source
+Delete-Source
