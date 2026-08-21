@@ -14,6 +14,7 @@ source "$(dirname "$0")/functions/config.sh"
 source "$(dirname "$0")/functions/sources.sh"
 source "$(dirname "$0")/functions/drive.sh"
 source "$(dirname "$0")/functions/compress.sh"
+source "$(dirname "$0")/functions/backup.sh"
 
 Show-Banner
 Show-MainMenu

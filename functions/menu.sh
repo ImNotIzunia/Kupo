@@ -13,7 +13,7 @@ Show-MainMenu() {
         case "$choice" in
             1)
                 clear
-                echo "[INFO] Start Backup"
+                Start-Backup
                 ;;
 
             2)

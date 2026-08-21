@@ -19,12 +19,14 @@ Compress-Source() {
     local archive_path="$destination/$source_name.zip"
 
     echo "Compressing : $source_name"
-    
-    if [[ -d "$source" ]]; then
-        zip -r -q "$archive_path" "$source"
-    else
-        zip -q "$archive_path" "$source"
-    fi
+
+    local source_parent
+    source_parent=$(dirname "$source")
+
+    (
+        cd "$source_parent" || exit 1
+        zip -r -q "$archive_path" "$source_name"
+    )
 
     if [[ $? -ne 0 ]]; then
         echo "Failed to compress : $source"
@@ -57,7 +59,7 @@ Compress-Backup() {
         ((current++))
 
         local source_name
-        source_name=$(basenmae "$source")
+        source_name=$(basename "$source")
 
         echo "[$current/$total] Compressing : $source_name"
 
@@ -81,7 +83,7 @@ Compress-BackupFolder() {
     local archive_name="$3"
 
     if [[ ! -d "$source_folder" ]]; then
-        echo "Source folder not found : $source_folder"
+        echo "Source folder not found : $source_folder" >&2
         return 1
     fi
 
@@ -91,7 +93,7 @@ Compress-BackupFolder() {
 
     local archive_path="$destination/$archive_name.zip"
 
-    echo "Creating final backup archive..."
+    echo "Creating final backup archive..." >&2
 
     (
         cd "$source_folder" || exit 1
@@ -99,11 +101,11 @@ Compress-BackupFolder() {
     )
 
     if [[ $? -ne 0 ]]; then
-        echo "Failed to create final backup"
+        echo "Failed to create final backup archive" >&2
         return 1
     fi
 
-    echo "Final compression completed : $archive_name.zip"
+    echo "Final compression completed : $archive_name.zip" >&2
 
     printf '%s\n' "$archive_path"
 }
