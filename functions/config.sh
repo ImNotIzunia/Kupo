@@ -17,7 +17,7 @@ Get-Config() {
         default_config=$(
             jq -n '{
                 backupDrive: {
-                    letter: "",
+                    uuid: "",
                     name: "",
                     size: ""
                 },
@@ -52,18 +52,18 @@ Show-Config() {
 
     echo "current config"
 
-    local letter name size folder lang
-    letter=$(jq -r '.backupDrive.letter // ""' <<< "$config")
+    local uuid name size folder lang
+    uuid=$(jq -r '.backupDrive.uuid // ""' <<< "$config")
     name=$(jq -r '.backupDrive.name // ""' <<< "$config")
     size=$(jq -r '.backupDrive.size // ""' <<< "$config")
     folder=$(jq -r '.backupFolder // ""' <<< "$config")
     lang=$(jq -r '.language // ""' <<< "$config")
 
     echo "Backup Drive :"
-    if [[ -z "$letter" ]]; then 
+    if [[ -z "$uuid" ]]; then 
         echo "   No Backup Drive"
     else
-        echo "   Letter : $letter"
+        echo "   Letter : $uuid"
         echo "   Name : $name"
         echo "   Size : $size"
     fi
@@ -96,16 +96,19 @@ Save-Config() {
         return 1
     fi
 
-    if ! jq empty <<< "$config" 2>/dev/null; then
+    if ! jq empty <<< "$config" >/dev/null 2>&1; then
         echo "Error"
         return 1
     fi
 
-    if ! jq '.' <<<"$config" >"$config_file"; then
+    mkdir -p "$(dirname "$config_file")"
+
+    if ! jq '.' <<< "$config" > "$config_file"; then
         echo "Error while saving"
         return 1
     fi
 
     echo "success save"
 }
+
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 Get-Source() {
     local config
     if ! config=$(Get-Config); then

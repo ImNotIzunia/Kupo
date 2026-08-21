@@ -113,15 +113,15 @@ Show-BackupMenu() {
         case "$choice" in
             1)
                 clear
-                echo "[INFO] Show backup"
+                Show-BackupDrive
                 ;;
             2)
                 clear
-                echo "[INFO] Config drive"
+                Set-BackupDrive
                 ;;
             3)
                 clear
-                echo "[INFO] Config folder"
+                Set-BackupFolder
                 ;;
             4)
                 clear

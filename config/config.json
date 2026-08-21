@@ -1,11 +1,10 @@
 {
   "backupDrive": {
-    "letter": "",
+    "uuid": "",
     "name": "",
     "size": ""
   },
   "backupFolder": "Backup",
-  "sources": [
-  ],
+  "sources": [],
   "language": "en"
 }
