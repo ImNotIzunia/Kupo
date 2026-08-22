@@ -6,16 +6,15 @@ Format-StorageSize() {
     if (( $(echo "$size >= 1000" | bc -l) )); then
         printf "%.1fTo\n" "$(echo "$size / 1000" | bc -l)"
     else
-        printf "%dGo\n" "$size"
+        printf "%sGo\n" "$(echo "($size+0.5)/1" | bc)"
     fi
 }
 
-
 Get-ExternalDrives() {
     lsblk -nr -o NAME,TYPE,SIZE,LABEL,UUID,MOUNTPOINTS |
-    awk '$2 == "part" && $6 != "" {
-        print $1 "|" $3 "|" $4 "|" $5 "|" $6
-    }'
+        awk '$2 == "part" && $6 != "" {
+            print $1 "|" $3 "|" $4 "|" $5 "|" $6
+        }'
 }
 
 
@@ -48,7 +47,6 @@ Show-BackupDrive() {
 
 
 Set-BackupDrive() {
-
     local config
 
     if ! config=$(Get-Config); then
@@ -100,7 +98,7 @@ Set-BackupDrive() {
         return 1
     fi
 
-    config=$(
+    if ! config=$(
         jq \
             --arg uuid "$uuid" \
             --arg name "${label:-Sans nom}" \
@@ -110,14 +108,13 @@ Set-BackupDrive() {
             .backupDrive.name = $name |
             .backupDrive.size = $size
             ' <<< "$config"
-    )
-
-    if [[ -z "$config" ]]; then
+    ); then
         echo "Erreur lors de la mise à jour"
         return 1
     fi
 
     if ! Save-Config "$config"; then
+        echo "failed"
         return 1
     fi
 
@@ -130,7 +127,6 @@ Set-BackupDrive() {
 
 
 Set-BackupFolder() {
-
     local config
 
     if ! config=$(Get-Config); then
@@ -139,7 +135,6 @@ Set-BackupFolder() {
     fi
 
     local current_folder
-
     current_folder=$(jq -r '.backupFolder // ""' <<< "$config")
 
     echo "Dossier actuel : $current_folder"
@@ -151,17 +146,21 @@ Set-BackupFolder() {
         folder="$current_folder"
     fi
 
-    config=$(
+    if ! config=$(
         jq \
             --arg folder "$folder" \
             '.backupFolder = $folder' \
             <<< "$config"
-    )
+    ); then
+        echo "Erreur lors de la mise à jour"
+        return 1
+    fi
 
-    Save-Config "$config"
+    if ! Save-Config "$config"; then
+        echo "failed"
+        return 1
+    fi
 
     echo
     echo "Dossier de save : $folder"
 }
-
-
