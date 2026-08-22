@@ -46,7 +46,9 @@ jobs:
           sudo apt-get install -y \
             bats \
             jq \
-            shellcheck
+            shellcheck \
+            zip \
+            unzip
 
       # --------------------------------------------------------
       # Verify tools

@@ -79,6 +79,8 @@ check_dependencies() {
         bats
         jq
         shellcheck
+        zip
+        unzip
     )
 
     local dependency
