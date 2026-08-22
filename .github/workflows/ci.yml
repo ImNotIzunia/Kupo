@@ -1,0 +1,100 @@
+name: Kupo CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests & static analysis
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+
+    steps:
+      # --------------------------------------------------------
+      # Checkout
+      # --------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------------
+      # Cache APT packages
+      # --------------------------------------------------------
+
+      - name: Cache APT packages
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives
+          key: apt-${{ runner.os }}-${{ hashFiles('.github/workflows/ci.yml') }}
+          restore-keys: |
+            apt-${{ runner.os }}-
+
+      # --------------------------------------------------------
+      # Install dependencies
+      # --------------------------------------------------------
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            bats \
+            jq \
+            shellcheck
+
+      # --------------------------------------------------------
+      # Verify tools
+      # --------------------------------------------------------
+
+      - name: Check tool versions
+        run: |
+          echo "Bash:"
+          bash --version | head -n 1
+
+          echo
+          echo "Bats:"
+          bats --version
+
+          echo
+          echo "jq:"
+          jq --version
+
+          echo
+          echo "ShellCheck:"
+          shellcheck --version
+
+      # --------------------------------------------------------
+      # Make test runner executable
+      # --------------------------------------------------------
+
+      - name: Prepare test runner
+        run: |
+          chmod +x tests/run.sh
+
+      # --------------------------------------------------------
+      # Run all checks
+      # --------------------------------------------------------
+
+      - name: Run tests and static analysis
+        run: |
+          ./tests/run.sh
+
+

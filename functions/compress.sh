@@ -23,12 +23,10 @@ Compress-Source() {
     local source_parent
     source_parent=$(dirname "$source")
 
-    (
-        cd "$source_parent" || exit 1
-        zip -r -q "$archive_path" "$source_name"
-    )
-
-    if [[ $? -ne 0 ]]; then
+    if ! (
+    cd "$source_parent" || exit 1
+    zip -r -q "$archive_path" "$source_name"
+    ); then
         echo "Failed to compress : $source"
         return 1
     fi
@@ -95,12 +93,10 @@ Compress-BackupFolder() {
 
     echo "Creating final backup archive..." >&2
 
-    (
-        cd "$source_folder" || exit 1
-        zip -r -q "$archive_path" ./*
-    )
-
-    if [[ $? -ne 0 ]]; then
+    if ! (
+    cd "$source_folder" || exit 1
+    zip -r -q "$archive_path" ./*
+    ); then
         echo "Failed to create final backup archive" >&2
         return 1
     fi
