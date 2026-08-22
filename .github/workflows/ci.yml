@@ -33,19 +33,7 @@ jobs:
       # --------------------------------------------------------
 
       - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # --------------------------------------------------------
-      # Cache APT packages
-      # --------------------------------------------------------
-
-      - name: Cache APT packages
-        uses: actions/cache@v4
-        with:
-          path: /var/cache/apt/archives
-          key: apt-${{ runner.os }}-${{ hashFiles('.github/workflows/ci.yml') }}
-          restore-keys: |
-            apt-${{ runner.os }}-
+        uses: actions/checkout@v5
 
       # --------------------------------------------------------
       # Install dependencies
@@ -82,19 +70,15 @@ jobs:
           shellcheck --version
 
       # --------------------------------------------------------
-      # Make test runner executable
+      # Prepare test runner
       # --------------------------------------------------------
 
       - name: Prepare test runner
-        run: |
-          chmod +x tests/run.sh
+        run: chmod +x tests/run.sh
 
       # --------------------------------------------------------
       # Run all checks
       # --------------------------------------------------------
 
       - name: Run tests and static analysis
-        run: |
-          ./tests/run.sh
-
-
+        run: ./tests/run.sh
