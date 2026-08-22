@@ -10,10 +10,12 @@ Get-Config-Path() {
 
 Get-Config() {
     local config_file
+
     config_file=$(Get-Config-Path)
 
     if [[ ! -f "$config_file" ]]; then
         local default_config
+
         default_config=$(
             jq -n '{
                 backupDrive: {
@@ -27,9 +29,23 @@ Get-Config() {
             }'
         )
 
-        printf '%s\n' "$default_config" > "$config_file"
+        mkdir -p "$(dirname "$config_file")" || {
+            echo "failed"
+            return 1
+        }
+
+        if ! printf '%s\n' "$default_config" > "$config_file"; then
+            echo "failed"
+            return 1
+        fi
+
         printf '%s\n' "$default_config"
         return 0
+    fi
+
+    if [[ ! -s "$config_file" ]]; then
+        echo "failed"
+        return 1
     fi
 
     if ! jq empty "$config_file" >/dev/null 2>&1; then
@@ -39,7 +55,6 @@ Get-Config() {
 
     cat "$config_file"
 }
-
 
 Show-Config() {
     local config
@@ -91,7 +106,7 @@ Save-Config() {
 
     config_file=$(Get-Config-Path)
 
-    if [[ -z "$config" ]]; then
+    if [[ -z "${config//[[:space:]]/}" ]]; then
         echo "Error"
         return 1
     fi
@@ -101,7 +116,10 @@ Save-Config() {
         return 1
     fi
 
-    mkdir -p "$(dirname "$config_file")"
+    if ! mkdir -p "$(dirname "$config_file")"; then
+        echo "Error while creating config directory"
+        return 1
+    fi
 
     if ! jq '.' <<< "$config" > "$config_file"; then
         echo "Error while saving"
