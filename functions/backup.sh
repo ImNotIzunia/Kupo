@@ -111,7 +111,10 @@ Set-TempFolder() {
         rm -rf "$temp_path"
     fi
 
-    mkdir -p "$temp_path"
+    if ! mkdir -p "$temp_path"; then
+        echo "Failed to create temporary folder" >&2
+        return 1
+    fi
 
     printf '%s\n' "$temp_path"
 }

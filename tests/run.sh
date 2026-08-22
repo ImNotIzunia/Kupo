@@ -202,12 +202,12 @@ run_bats() {
     done < <(
         find "$TESTS_DIR" \
             -type f \
-            -name '*.bats' \
+            -name '*.bat' \
             -print0
     )
 
     if [[ "${#test_files[@]}" -eq 0 ]]; then
-        warning "No Bats test files found"
+        warning "No Bat test files found"
         return
     fi
 
