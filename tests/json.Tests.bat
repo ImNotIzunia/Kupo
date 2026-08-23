@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-    CONFIG_FILE="$BATS_TEST_DIRNAME/../config/config.json"
+    CONFIG_FILE="$BATS_TEST_DIRNAME/../config/config.tests.json"
 }
 
 ####################################################

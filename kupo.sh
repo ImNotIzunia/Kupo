@@ -13,6 +13,7 @@ source "$(dirname "$0")/functions/menu.sh"
 source "$(dirname "$0")/functions/config.sh"
 source "$(dirname "$0")/functions/sources.sh"
 source "$(dirname "$0")/functions/drive.sh"
+source "$(dirname "$0")/functions/progress.sh"
 source "$(dirname "$0")/functions/compress.sh"
 source "$(dirname "$0")/functions/backup.sh"
 
