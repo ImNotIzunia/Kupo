@@ -9,6 +9,7 @@ if ! Check-Dependencies; then
 fi
 
 source "$(dirname "$0")/functions/logo.sh"
+source "$(dirname "$0")/functions/lang.sh"
 source "$(dirname "$0")/functions/menu.sh"
 source "$(dirname "$0")/functions/config.sh"
 source "$(dirname "$0")/functions/sources.sh"

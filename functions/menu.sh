@@ -3,7 +3,7 @@
 Show-MainMenu() {
 
     while true; do
-        echo "1. Start Backup"
+        echo "1. $(Get-String "main.startBackup")"
         echo "2. Configuration"
         echo "3. Languages"
         echo "4. Exit"
@@ -204,11 +204,11 @@ Show-LangMenu() {
         case "$choice" in
             1)
                 clear
-                echo "[INFO] Set to French"
+                Set-Language "fr"
                 ;;
             2)
                 clear
-                echo "[INFO] Set to English"
+                Set-Language "en"
                 ;;
             3)
                 clear
