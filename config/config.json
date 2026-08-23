@@ -1,13 +1,11 @@
 {
   "backupDrive": {
-    "uuid": "6A50A9D550A9A871",
-    "name": "SIVA_NODE_0",
-    "size": "1.8T"
+    "uuid": "",
+    "name": "",
+    "size": ""
   },
-  "backupFolder": "moogggggg",
+  "backupFolder": "",
   "sources": [
-    "/home/izunia/Documents/Kupo/functions",
-    "/home/izunia/Documents/Kupo/tests"
   ],
-  "language": "fr"
+  "language": "en"
 }

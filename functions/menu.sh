@@ -13,6 +13,7 @@ Show-MainMenu() {
         case "$choice" in
             1)
                 clear
+                Write-Log "Menu - Start Backup" "INFO"
                 Start-Backup
                 ;;
 

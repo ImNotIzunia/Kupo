@@ -8,6 +8,7 @@ if ! Check-Dependencies; then
     exit 1
 fi
 
+source "$(dirname "$0")/functions/logs.sh"
 source "$(dirname "$0")/functions/logo.sh"
 source "$(dirname "$0")/functions/lang.sh"
 source "$(dirname "$0")/functions/menu.sh"
