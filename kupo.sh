@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# ============================================================
+# Kupo - Launcher
+#
+#
+# Loads all the functions modules, initializes the log file
+# then displays the application and main menu
+#
+#
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+# ============================================================
+
 set -e
 
 source "$(dirname "$0")/functions/dependencies.sh"
