@@ -68,7 +68,7 @@ Show-MainMenu() {
             *)
                 clear
                 Write-Log "Menu - Invalid Choice" "ERROR"
-                echo "$(Get-String "main.invalid")"
+                Get-String "main.invalid"
                 sleep 1
                 ;;
         esac
@@ -137,7 +137,7 @@ Show-ConfigMenu() {
             *)
                 clear
                 Write-Log "Menu - Invalid Choice" "ERROR"
-                echo "$(Get-String "configmenu.invalid")"
+                Get-String "configmenu.invalid"
                 sleep 1
                 ;;
         esac
@@ -207,7 +207,7 @@ Show-BackupMenu() {
             *)
                 clear
                 Write-Log "Menu - Invalid Choice" "ERROR"
-                echo "$(Get-String "backmenu.invalid")"
+                Get-String "backmenu.invalid"
                 sleep 1
                 ;;
         esac
@@ -276,7 +276,7 @@ Show-SourceMenu() {
             *)
                 clear
                 Write-Log "Menu - Invalid Choice" "ERROR"
-                echo "$(Get-String "sourcemenu.invalid")"
+                Get-String "sourcemenu.invalid"
                 sleep 1
                 ;;
         esac
@@ -338,7 +338,7 @@ Show-LangMenu() {
             *)
                 clear
                 Write-Log "Menu - Invalid Choice" "ERROR"
-                echo "$(Get-String "lang.invalid")"
+                Get-String "lang.invalid"
                 sleep 1
                 ;;
         esac
