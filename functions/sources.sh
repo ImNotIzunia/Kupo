@@ -164,7 +164,8 @@ Delete-Source() {
     fi
 
     # Rebuild the source list without the selected folder
-    new_config=$(jq --argjson index "$((choice -1))" \ 'del(.sources[$index])' <<< "$config")
+    new_config=$(jq --argjson index "$((choice - 1))" \
+        'del(.sources[$index])' <<< "$config")
 
     if ! Save-Config "$new_config"; then
         Write-Log "Failed to save into the config file" "ERROR"

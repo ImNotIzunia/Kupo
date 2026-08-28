@@ -19,6 +19,47 @@ setup() {
     Save-Config() {
         printf '%s\n' "$1" > "$CONFIG_FILE"
     }
+
+    # Mock de Get-String
+    Get-String() {
+        case "$1" in
+            source.nosources)
+                printf '%s' "   No Sources"
+                ;;
+            source.addinvalid)
+                printf '%s' "failed"
+                ;;
+            source.addnotexist)
+                printf '%s' "not found"
+                ;;
+            source.addduplicate)
+                printf '%s' "already exists"
+                ;;
+            source.addsuccess)
+                printf '%s' "success"
+                ;;
+            source.failedsave)
+                printf '%s' "failed to save"
+                ;;
+            source.deletenosources)
+                printf '%s' "No sources"
+                ;;
+            source.deletechoice)
+                printf '%s' "Choose source"
+                ;;
+            source.deleteinvalid)
+                printf '%s' "invalid"
+                ;;
+            source.deletesuccess)
+                printf '%s' "success"
+                ;;
+        esac
+    }
+
+    # Mock de Write-Log
+    Write-Log() {
+        :
+    }
 }
 
 teardown() {
