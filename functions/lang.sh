@@ -1,4 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+# SYNOPSIS
+# Kupo - Language functions
+#
+# DESCRIPTION
+# Provide functions to load, cache and retrieve translated strings
+# based on the language configured by the user
+# 
+# NOTES
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+
+
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LANG_DIR="$SCRIPT_DIR/../lang"
@@ -7,6 +21,21 @@ LANG_DIR="$SCRIPT_DIR/../lang"
 _STRINGS_JSON=""
 
 
+# SYNOPSIS
+# Loads the translation strings for the configured language
+#
+# DESCRIPTION
+# Reads the configured language from the config file and
+# loads the matching JSON from the lang folder
+# Falls back to English if the configured language file is
+# missing or if no language is configured
+#
+# EXAMPLE
+# Init-Language
+#
+# OUTPUTS
+# None
+#
 Init-Language() {
     local config
     config="$(Get-Config)"
@@ -28,6 +57,24 @@ Init-Language() {
 }
 
 
+# SYNOPSIS
+# Retrieves a translated string by its dotted key
+#
+# DESCRIPTION
+# Looks up a translation using a dotted key path in
+# the currently loaded language strings
+# Loads the language automatically on first use
+# Returns the key itself if no matching translation is found
+#
+# PARAMETER Key
+# The dotted path of the string to retrieve
+#
+# EXAMPLE
+# Get-String "main.startBackup"
+#
+# OUTPUTS
+# echo
+#
 Get-String() {
     local key="$1"
 
@@ -53,6 +100,22 @@ Get-String() {
 }
 
 
+# SYNOPSIS
+# Changes the application language
+#
+# DESCRIPTION
+# Saves the given language code to the configuration and 
+# reloads the translation strings accordingly
+#
+# PARAMETER Code
+# The language code to switch to ("fr" or "en")
+#
+# EXAMPLE
+# Set-Language "fr"
+#
+# OUTPUTS
+# None
+# 
 Set-Language() {
     local code="$1"
 

@@ -1,5 +1,37 @@
 #!/bin/bash
 
+# SYNOPSIS
+# Kupo - Compress management functions
+#
+# DESCRIPTION
+# Provide functions to compress the sources into archives
+#
+# NOTES
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+
+
+
+# SYNOPSIS
+# Compresses a single backup source into a zip archive
+#
+# DESCRIPTION
+# Validates that the source exists creates the destination folder if needed
+# then compresses the source into a zip archive named after the source
+#
+# PARAMETER Source
+# The path of the file or folder to compress
+#
+# PARAMETER Destination
+# The folder where the resulting archive will be created
+#
+# EXAMPLE
+# Compress-Source "/Documents/" "/Kupo/Temp"
+#
+# OUTPUTS
+# printf
+#
 Compress-Source() {
     local source="$1"
     local destination="$2"
