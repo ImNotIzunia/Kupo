@@ -69,7 +69,7 @@ Add-Source() {
     local new_config
 
     if ! config=$(Get-Config); then
-        echo "failed"
+        Write-Log "Can't have the config file" "ERROR"
         return 1
     fi
 
@@ -78,22 +78,26 @@ Add-Source() {
     fi
 
     if [[ -z "${path//[[:space:]]/}" ]]; then
-        echo "failed"
+        Get-String "source.addinvalid"
+        Write-Log "Invalid path to the folder to add" "ERROR"
         return 1
     fi
 
     if [[ ! -d "$path" ]]; then
-        echo "not found"
+        Get-String "source.addnotexist"
+        Write-Log "Path to the folder does not exist" "ERROR"
         return 1
     fi
 
     if ! resolved_path="$(cd -- "$path" 2>/dev/null && pwd -P)"; then
-        echo "not resolved"
+        Get-String "source.addnotexist"
+        Write-Log "Path to the folder does not exist" "ERROR"
         return 1
     fi
 
     if jq -e --arg path "$resolved_path" '.sources | index($path)' <<<"$config" >/dev/null; then
-        echo "already exists"
+        Get-String "source.addduplicate"
+        Write-Log "Folder already exists in the list" "WARNING"
         return 1
     fi
 
@@ -103,11 +107,13 @@ Add-Source() {
     )
 
     if ! Save-Config "$new_config"; then
-        echo "failed to save"
+        Get-String "source.failedsave"
+        Write-Log "Failed to save into the config file" "ERROR"
         return 1
     fi
 
-    echo "success"
+    Get-String "source.addsuccess"
+    Write-Log "Folder added successfully" "SUCCESS"
 }
 
 
@@ -130,37 +136,42 @@ Delete-Source() {
     local source_count
     local choice
     local new_config
+
     if ! config=$(Get-Config); then
-        echo "failed"
+        Write-Log "Can't have the config file" "ERROR"
         return 1
     fi
 
     source_count=$(jq '.sources | length' <<<"$config")
 
     if [[ "$source_count" -eq 0 ]]; then
-        echo "No sources"
+        Get-String "source.deletenosources"
+        Write-Log "No source folders configured" "WARNING"
         return 1
     fi
 
+    # Display the configured folders and asking for selection
     Get-Source
-    echo
 
-    if ! IFS= read -rp "Enter the number of the source to remove : " choice; then
+    if ! IFS= read -rp "$(Get-String "source.deletechoice") : " choice; then
         choice=""
     fi
 
     if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > source_count )); then
-        echo "invalid"
+        Get-String "source.deleteinvalid"
+        Write-Log "Invalid number for deleting source folder" "ERROR"
         return 1
     fi
 
+    # Rebuild the source list without the selected folder
     new_config=$(jq --argjson index "$((choice -1))" \ 'del(.sources[$index])' <<< "$config")
 
     if ! Save-Config "$new_config"; then
-        echo "failed to save"
+        Write-Log "Failed to save into the config file" "ERROR"
         return 1
     fi
 
-    echo "success"
+    Get-String "source.deletesuccess"
+    Write-Log "Source folder removed successfully" "SUCCESS"
 }
 
