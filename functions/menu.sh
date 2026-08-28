@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SYNOPSIS
-# Moogle - Menus management functions
+# Kupo - Menus management functions
 #
 # DESCRIPTION
 # Provide the functions to show the different menus
