@@ -26,6 +26,9 @@ setup() {
             source.nosources)
                 printf '%s' "   No Sources"
                 ;;
+            source.configerror)
+                printf '%s' "failed"
+                ;;
             source.addinvalid)
                 printf '%s' "failed"
                 ;;

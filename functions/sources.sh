@@ -30,8 +30,8 @@ Get-Source() {
     local config
 
     if ! config=$(Get-Config); then
-        Write-Log "No source folders configured" "WARNING"
-        Get-String "source.nosources"
+        Write-Log "Failed to load the config file" "ERROR"
+        Get-String "source.configerror"
         return 1
     fi
 
@@ -70,6 +70,7 @@ Add-Source() {
 
     if ! config=$(Get-Config); then
         Write-Log "Can't have the config file" "ERROR"
+        Get-String "source.configerror"
         return 1
     fi
 
@@ -139,6 +140,7 @@ Delete-Source() {
 
     if ! config=$(Get-Config); then
         Write-Log "Can't have the config file" "ERROR"
+        Get-String "source.configerror"
         return 1
     fi
 
@@ -168,6 +170,7 @@ Delete-Source() {
         'del(.sources[$index])' <<< "$config")
 
     if ! Save-Config "$new_config"; then
+        Get-String "source.failedsave"
         Write-Log "Failed to save into the config file" "ERROR"
         return 1
     fi
