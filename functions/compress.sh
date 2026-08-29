@@ -38,7 +38,7 @@ Compress-Source() {
     
     if [[ ! -e "$source" ]]; then
     Write-Log "Source not found : $source" "ERROR"
-    Get-String "compress.nosource"
+    echo "$(Get-String "compress.nosource") : $source"
     return 1
     fi
     
@@ -101,6 +101,8 @@ Compress-Backup() {
     local current=0
     
     if (( total == 0 )); then
+        echo "$(Get-String "compress.nosources")"
+        Write-Log "No sources to compress" "ERROR"
         return 1
     fi
     

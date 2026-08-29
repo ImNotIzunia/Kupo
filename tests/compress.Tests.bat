@@ -10,6 +10,31 @@ setup() {
     mkdir -p "$DESTINATION_DIR"
 
     source "$BATS_TEST_DIRNAME/../functions/compress.sh"
+
+    # Stand-ins for helpers normally provided by other Kupo modules
+    # (logging.sh / i18n.sh / progress.sh) that aren't part of this
+    # test target. Swap these out for the real modules if/when they're
+    # sourced here instead.
+    Write-Log() { :; }
+
+    Get-String() {
+        case "$1" in
+            compress.compress)       echo "Compressing" ;;
+            compress.sucess)         echo "Compression completed" ;;
+            compress.failed)         echo "Failed to compress" ;;
+            compress.nosource)       echo "Source not found" ;;
+            compress.nosources)      echo "No sources to compress" ;;
+            compress.backupfailed)   echo "Backup compression failed" ;;
+            compress.backupsucess)   echo "All sources compressed" ;;
+            compress.foldernotfound) echo "Source folder not found" ;;
+            compress.foldercreate)   echo "Creating final backup archive..." ;;
+            compress.folderfailed)   echo "Failed to create final backup archive" ;;
+            compress.foldersuccess)  echo "Final compression completed" ;;
+            *)                       echo "$1" ;;
+        esac
+    }
+
+    Show-ProgressBar() { :; }
 }
 
 teardown() {
