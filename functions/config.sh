@@ -83,15 +83,20 @@ Get-Config() {
     fi
 
     if [[ ! -s "$config_file" ]]; then
+        Write-Log "Config file is empty" "ERROR"
+        Get-String "config.failedload"
         return 1
     fi
 
     if ! jq empty "$config_file" >/dev/null 2>&1; then
+        Write-Log "Config file contains invalid JSON" "ERROR"
+        Get-String "config.failedload"
         return 1
     fi
 
     cat "$config_file"
     Write-Log "Confiiguration file created" "SUCCESS"
+    return 0
 }
 
 
@@ -180,22 +185,32 @@ Save-Config() {
     config_file=$(Get-Config-Path)
 
     if [[ -z "${config//[[:space:]]/}" ]]; then
+        Write-Log "Config to save is empty" "ERROR"
+        Get-String "config.saveerror"
         return 1
     fi
 
     if ! jq empty <<< "$config" >/dev/null 2>&1; then
+        Write-Log "Config to save contains invalid JSON" "ERROR"
+        Get-String "config.saveerror"
         return 1
     fi
 
     if ! mkdir -p "$(dirname "$config_file")"; then
+        Write-Log "Failed to create config directory" "ERROR"
+        Get-String "config.saveerror"
         return 1
     fi
 
     if ! jq '.' <<< "$config" > "$config_file"; then
+        Write-Log "Failed to write config file" "ERROR"
+        Get-String "config.saveerror"
         return 1
     fi
 
-    Write-Log "Config Saved" "ERROR"
+    Write-Log "Config Saved" "SUCCESS"
+    Get-String "config.savesuccess"
+    return 0
 }
 
 

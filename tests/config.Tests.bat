@@ -13,6 +13,33 @@ setup() {
     Get-Config-Path() {
         printf '%s\n' "$CONFIG_FILE"
     }
+
+    # --------------------------------------------------------
+    # Stand-ins for helpers normally provided by other Kupo
+    # modules (logging.sh / i18n.sh) that aren't sourced here.
+    # Swap these for the real modules if/when they're sourced.
+    # --------------------------------------------------------
+
+    Write-Log() { :; }
+
+    Get-String() {
+        case "$1" in
+            config.failedload)     echo "failed" ;;
+            config.saveerror)      echo "Error" ;;
+            config.savesuccess)    echo "success save" ;;
+            config.currentconfig)  echo "current config" ;;
+            config.backupdrive)    echo "Backup Drive :" ;;
+            config.nobackupdrive)  echo "No Backup Drive" ;;
+            config.uuid)           echo "Letter" ;;
+            config.name)           echo "Name" ;;
+            config.size)           echo "Size" ;;
+            config.folder)         echo "Folder" ;;
+            config.sources)        echo "Sources :" ;;
+            config.nosources)      echo "No Sources" ;;
+            config.lang)           echo "Language" ;;
+            *)                     echo "$1" ;;
+        esac
+    }
 }
 
 teardown() {
