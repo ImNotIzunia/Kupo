@@ -22,6 +22,40 @@ setup() {
     source "$BATS_TEST_DIRNAME/../functions/backup.sh"
 
     # --------------------------------------------------------
+    # Stand-ins for helpers normally provided by other Kupo
+    # modules (logging.sh / i18n.sh) that aren't sourced here.
+    # Swap these for the real modules if/when they're sourced.
+    # --------------------------------------------------------
+
+    Write-Log() { :; }
+
+    Get-String() {
+        case "$1" in
+            backup.failedload)           echo "Failed to load configuration" ;;
+            backup.startbackup)          echo "Starting backup..." ;;
+            backup.cancelled)            echo "Backup cancelled." ;;
+            backup.failedtempfolder)     echo "Failed to create temporary folder" ;;
+            backup.failedtemp)           echo "Failed to create temp folder" ;;
+            backup.nobackupdrive)        echo "No back drive configured" ;;
+            backup.nobackupfolder)       echo "No backup folder configured" ;;
+            backup.notconnected)         echo "Backup drive is not connected" ;;
+            backup.nosources)            echo "No sources configured" ;;
+            backup.notfound)             echo "Source not found" ;;
+            backup.notmounted)           echo "Backup drive is not mounted" ;;
+            backup.failedcreate)         echo "Failed to create backup path" ;;
+            backup.createbackup)         echo "Created backup path" ;;
+            backup.alreadycreate)        echo "Backup path already exists" ;;
+            backup.destination)          echo "Backup destination :" ;;
+            backup.copy)                 echo "Copying backup..." ;;
+            backup.completed)            echo "Backup completed successfully." ;;
+            backup.failedcompression)    echo "Backup failed during compression" ;;
+            backup.failedfinalcompression) echo "Backup failed during final compression" ;;
+            backup.failedcopy)           echo "Backup failed during copy" ;;
+            *)                           echo "$1" ;;
+        esac
+    }
+
+    # --------------------------------------------------------
     # Mock Get-Config
     # --------------------------------------------------------
 

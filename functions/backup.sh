@@ -35,6 +35,7 @@ Test-Config() {
 
     if ! config=$(Get-Config); then
         Write-Log "Failed to load configuration" "ERROR"
+        Get-String "backup.failedload"
         return 1
     fi
 
@@ -162,10 +163,12 @@ Set-BackupPath() {
 
         echo "$(Get-String "backup.createbackup") : $path"
         Write-Log "Created backup path : $path" "SUCCESS"
+        return 0
 
     else
         echo "$(Get-String "backup.alreadycreate") : $path"
         Write-Log "Backup path already exists: $path" "ERROR"
+        return 0
     fi
 }
 
@@ -218,6 +221,7 @@ Set-TempFolder() {
 # None
 #
 Start-Backup() {
+    echo
     Write-Log "Starting Backup" "INFO"
     Get-String "backup.startbackup"
     echo
@@ -225,6 +229,9 @@ Start-Backup() {
     local config
 
     if ! config=$(Test-Config); then
+        echo
+        Write-Log "Backup cancelled" "ERROR"
+        Get-String "backup.cancelled"
         return 1
     fi
 
@@ -233,6 +240,8 @@ Start-Backup() {
     temp_path=$(Set-TempFolder)
 
     if [[ -z "$temp_path" ]]; then
+        Write-Log "Failed to create temporary folder" "ERROR"
+        Get-String "backup.failedtempfolder"
         return 1
     fi
 
