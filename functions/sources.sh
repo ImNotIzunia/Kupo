@@ -17,7 +17,7 @@
 # Display the folders configured for backup
 #
 # DESCRIPTION
-# Loads the current Moogle conf file and display all configured source folder with a numbered list
+# Loads the current Kupo conf file and display all configured source folder with a numbered list
 # If no folders are configured an message is displayed
 #
 # EXAMPLE
