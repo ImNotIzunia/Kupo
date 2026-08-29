@@ -54,9 +54,9 @@ Test-Config() {
     fi
 
     if [[ -z "$backup_folder" ]]; then
-    Get-String "backup.nobackupfolder"
+        Get-String "backup.nobackupfolder"
         Write-Log "No backup folder configured" "ERROR"
-    return 1
+        return 1
     fi
 
     local mountpoint

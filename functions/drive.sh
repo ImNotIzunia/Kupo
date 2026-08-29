@@ -1,5 +1,34 @@
 #!/bin/bash
 
+# SYNOPSIS
+# Kupo - Backup drive management functions
+#
+# DESCRIPTION
+# Provide the functions to manage external drives for the backup folder
+#
+# NOTES
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+
+
+
+# SYNOPSIS
+# Formats a storage size into readable string
+#
+# DESCRIPTION
+# Converts a size expressed in gigabytes into a rounded string
+# Values of 1000Gb or more are converted to Terabytes
+#
+# PARAMETER Size
+# The size in gigabytes to format
+#
+# EXAMPLE
+# Format-StorageSize 512
+#
+# OUTPUTS
+# echo
+#
 Format-StorageSize() {
     local size="$1"
 
@@ -10,6 +39,20 @@ Format-StorageSize() {
     fi
 }
 
+
+# SYNOPSIS
+# Retrieves the list of external drives connected to the computer
+#
+# DESCRIPTION
+# Queries disks connected to the computer and returns them
+# along with their letter, name, total size and free space percentage
+#
+# EXAMPLE
+# Get-ExternalDrives
+#
+# OUTPUTS
+# echo
+#
 Get-ExternalDrives() {
     lsblk -nr -o NAME,TYPE,SIZE,LABEL,UUID,MOUNTPOINTS |
         awk '$2 == "part" && $6 != "" {
@@ -18,6 +61,19 @@ Get-ExternalDrives() {
 }
 
 
+# SYNOPSIS
+# Displays the currently configured backup drive
+#
+# DESCRIPTION
+# Loads the config file and prints the letter and 
+# name of the configured backup drive
+#
+# EXAMPLE
+# Show-BackupDrive
+#
+# OUTPUTS
+# None
+#
 Show-BackupDrive() {
     local config
 
@@ -35,33 +91,48 @@ Show-BackupDrive() {
     size=$(jq -r '.backupDrive.size // ""' <<< "$config")
 
     if [[ -z "$uuid" ]]; then
-        echo "Aucun backup"
+        Get-String "drive.nodrive"
+        Write-Log "No Backup Drive configured" "WARNING"
         return 0
     fi
 
-    echo "Disque actuel :"
-    echo "  Name : $name"
-    echo "  UUID : $uuid"
-    echo "  Size : $size"
+    Get-String "drive.actual"
+    echo "  $(Get-String "drive.drivename") : $name"
+    echo "  $(Get-String "drive.driveuuid") : $uuid"
+    echo "  $(Get-String "drive.drivesize") : $size"
 }
 
 
+# SYNOPSIS
+# Sets the backup drive from the list of available external drives
+#
+# DESCRIPTION
+# Lists the connected drives and prompts the user to choose one
+# The selected drive's letter, name and size are saved into the config file
+#
+# EXAMPLE
+# Set-BackupDrive
+#
+# OUTPUTS
+# None
+#
 Set-BackupDrive() {
     local config
 
     if ! config=$(Get-Config); then
-        echo "failed"
         return 1
     fi
 
     mapfile -t drives < <(Get-ExternalDrives)
 
     if [[ ${#drives[@]} -eq 0 ]]; then
-        echo "Aucun disque trouvé"
+        Get-String "drive.notfound"
+        Write-Log "No storage drive founded" "WARNING"
         return 0
     fi
 
-    echo "Disques dispo :"
+    Get-String "drive.founddrive"
+    Write-Log "Showing available drives" "INFO"
     echo
 
     for i in "${!drives[@]}"
@@ -77,24 +148,27 @@ Set-BackupDrive() {
 
     echo
 
-    read -rp "Choix : " choice
+    read -rp "$(Get-String "drive.choice") : " choice
 
     if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
-        echo "Choix invalide"
+        Get-String "drive.invalidchoice"
+        Write-Log "Invalid number for selecting backup drive" "ERROR"
         return 1
     fi
 
     local index=$((choice - 1))
 
     if (( index < 0 || index >= ${#drives[@]} )); then
-        echo "Choix invalide"
+        Get-String "drive.invalidchoice"
+        Write-Log "Invalid number for selecting backup drive" "ERROR"
         return 1
     fi
 
     IFS="|" read -r name size label uuid mountpoint <<< "${drives[$index]}"
 
     if [[ -z "$uuid" ]]; then
-        echo "Impossible de récupérer l'UUID"
+        Get-String "drive.cantuuid"
+        Write-Log "Can't retrive the UUID" "ERROR"
         return 1
     fi
 
@@ -109,38 +183,47 @@ Set-BackupDrive() {
             .backupDrive.size = $size
             ' <<< "$config"
     ); then
-        echo "Erreur lors de la mise à jour"
+        Write-Log "Error during update" "ERROR"
         return 1
     fi
 
     if ! Save-Config "$config"; then
-        echo "failed"
         return 1
     fi
 
-    echo
-    echo "Disque sélectionné : ${label:-Sans nom}"
-    echo "UUID : $uuid"
-    echo "Taille : $size"
-    echo "Monté sur : $mountpoint"
+    Get-String "drive.drivesuccess"
+    Write-Log "Backup Drive added successfully" "SUCCESS"
 }
 
 
+# SYNOPSIS
+# Sets the backup folder name
+# 
+# DESCRIPTION
+# Displays the current backup folder and prompts the user for a new one
+# If the input is empty, the current folde name is kept unchanged
+#
+# EXAMPLE
+# Set-BackupFolder
+#
+# OUTPUTS
+# None
+#
 Set-BackupFolder() {
     local config
 
     if ! config=$(Get-Config); then
-        echo "failed"
         return 1
     fi
 
     local current_folder
     current_folder=$(jq -r '.backupFolder // ""' <<< "$config")
 
-    echo "Dossier actuel : $current_folder"
+    echo "$(Get-String "drive.currentfolder") : $current_folder"
+    Write-Log "Current backup folder : $current_folder" "INFO"
     echo
 
-    read -rp "New dossier : " folder
+    read -rp "$(Get-String "drive.folderchoice") : " folder
 
     if [[ -z "$folder" ]]; then
         folder="$current_folder"
@@ -152,15 +235,15 @@ Set-BackupFolder() {
             '.backupFolder = $folder' \
             <<< "$config"
     ); then
-        echo "Erreur lors de la mise à jour"
+        Write-Log "Error during update" "ERROR"
         return 1
     fi
 
     if ! Save-Config "$config"; then
-        echo "failed"
         return 1
     fi
 
-    echo
-    echo "Dossier de save : $folder"
+    Get-String "drive.folderchange"
+    Write-Log "Backup folder updated successfully : $folder" "SUCCESS"
 }
+
