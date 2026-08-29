@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# SYNOPSIS
+# Kupo - Dependencies management functions
+#
+# DESCRIPTION
+# Provide functions to check if the dependencies are installed
+# If not ask the user if he want to install them
+#
+# NOTES
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+
+
 REQUIRED_DEPS=(
     "jq"
     "bc"
@@ -7,6 +20,20 @@ REQUIRED_DEPS=(
 )
 
 
+# SYNOPSIS
+# Check if the dependencies are installed
+# 
+# DESCRIPTION
+# Check for the needed dependencies if not installed
+# ask the user if he want to install them
+# They are needed to run the project
+# 
+# EXAMPLE
+# Check-Dependencies
+# 
+# OUTPUTS
+# echo
+#
 Check-Dependencies() {
     local missing=()
 
@@ -22,7 +49,7 @@ Check-Dependencies() {
     fi
 
     echo
-    echo "Missing deps : "
+    echo "Missing Dependencies for the project : "
     echo
 
     for dependency in "${missing[@]}"
@@ -44,6 +71,19 @@ Check-Dependencies() {
 }
 
 
+# SYNOPSIS
+# Install missing dependencies
+#
+# DESCRIPTION
+# Look for the package manager and try to
+# isntall the missing dependencies
+#
+# EXAMPLE
+# Install-Dependencies
+# 
+# OUTPUTS
+# echo
+#
 Install-Dependencies() {
     local dependencies=("$@")
 
