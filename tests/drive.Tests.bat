@@ -19,6 +19,39 @@ setup() {
 
     source "$BATS_TEST_DIRNAME/../functions/drive.sh"
 
+    # --------------------------------------------------------
+    # Stand-ins for helpers normally provided by other Kupo
+    # modules (logging.sh / i18n.sh) that aren't sourced here.
+    # Swap these for the real modules if/when they're sourced.
+    # --------------------------------------------------------
+
+    Write-Log() { :; }
+
+    Get-String() {
+        case "$1" in
+            drive.nodrive)        echo "Aucun backup" ;;
+            drive.actual)         echo "Disque actuel :" ;;
+            drive.drivename)      echo "Name" ;;
+            drive.driveuuid)      echo "UUID" ;;
+            drive.drivesize)      echo "Size" ;;
+            drive.notfound)       echo "Aucun disque trouvé" ;;
+            drive.founddrive)     echo "Disques dispo :" ;;
+            drive.choice)         echo "Choix" ;;
+            drive.invalidchoice)  echo "Choix invalide" ;;
+            drive.cantuuid)       echo "Impossible de récupérer l'UUID" ;;
+            drive.configfailed)   echo "failed" ;;
+            drive.savefailed)     echo "failed" ;;
+            drive.driveselected)  echo "Disque sélectionné" ;;
+            drive.drivetaille)    echo "Taille" ;;
+            drive.drivemounted)   echo "Monté sur" ;;
+            drive.drivesuccess)   echo "Disque de sauvegarde configuré avec succès" ;;
+            drive.currentfolder)  echo "Dossier actuel" ;;
+            drive.folderchoice)   echo "Nouveau dossier" ;;
+            drive.folderchange)   echo "Dossier de sauvegarde mis à jour" ;;
+            *)                    echo "$1" ;;
+        esac
+    }
+
     Get-Config() {
         cat "$CONFIG_FILE"
     }

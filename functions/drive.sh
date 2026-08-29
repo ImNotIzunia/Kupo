@@ -78,13 +78,10 @@ Show-BackupDrive() {
     local config
 
     if ! config=$(Get-Config); then
-        echo "failed"
+        Get-String "drive.configfailed"
+        Write-Log "Failed to load configuration" "ERROR"
         return 1
     fi
-
-    local uuid
-    local name
-    local size
 
     uuid=$(jq -r '.backupDrive.uuid // ""' <<< "$config")
     name=$(jq -r '.backupDrive.name // ""' <<< "$config")
@@ -120,6 +117,8 @@ Set-BackupDrive() {
     local config
 
     if ! config=$(Get-Config); then
+        Get-String "drive.configfailed"
+        Write-Log "Failed to load configuration" "ERROR"
         return 1
     fi
 
@@ -172,6 +171,11 @@ Set-BackupDrive() {
         return 1
     fi
 
+    echo "$(Get-String "drive.driveselected") : ${label:-Sans nom}"
+    echo "  $(Get-String "drive.driveuuid") : $uuid"
+    echo "  $(Get-String "drive.drivetaille") : $size"
+    echo "  $(Get-String "drive.drivemounted") : $mountpoint"
+
     if ! config=$(
         jq \
             --arg uuid "$uuid" \
@@ -188,6 +192,8 @@ Set-BackupDrive() {
     fi
 
     if ! Save-Config "$config"; then
+        Get-String "drive.savefailed"
+        Write-Log "Failed to save configuration" "ERROR"
         return 1
     fi
 
@@ -213,6 +219,8 @@ Set-BackupFolder() {
     local config
 
     if ! config=$(Get-Config); then
+        Get-String "drive.configfailed"
+        Write-Log "Failed to load configuration" "ERROR"
         return 1
     fi
 
@@ -240,6 +248,8 @@ Set-BackupFolder() {
     fi
 
     if ! Save-Config "$config"; then
+        Get-String "drive.savefailed"
+        Write-Log "Failed to save configuration" "ERROR"
         return 1
     fi
 
