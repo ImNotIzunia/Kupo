@@ -1,10 +1,40 @@
 #!/bin/bash
 
+# SYNOPSIS
+# Kupo - Backup management functions
+#
+# DESCRIPTION
+# Provide functions to validate the config file, build backup paths,
+# manage temp folder and start backup process
+#
+# NOTES
+# Author  : Izunia
+# Version : 1.0.0
+# License : MIT License
+
+
+
+# SYNOPSIS
+# Validates the current configuration
+#
+# DESCRIPTION
+#
+# Checks whether the configuration can be loaded and verifies that
+# a backup drive, backup folder and at least one backup source are configured
+#
+# Returns the loaded configuration when all checks pass
+#
+# EXAMPLE
+# Test-Config
+#
+# OUTPUTS
+# echo
+#
 Test-Config() {
     local config
 
     if ! config=$(Get-Config); then
-        echo "Failed to load configuration"
+        Write-Log "Failed to load configuration" "ERROR"
         return 1
     fi
 
@@ -17,12 +47,14 @@ Test-Config() {
     source_count=$(jq '.sources | length' <<< "$config")
 
     if [[ -z "$uuid" ]]; then
-        echo "No back drive configured"
+        Get-String "backup.nobackupdrive"
+        Write-Log "No backup drive configured" "ERROR"
         return 1
     fi
 
     if [[ -z "$backup_folder" ]]; then
-    echo "No backup folder configured"
+    Get-String "backup.nobackupfolder"
+        Write-Log "No backup folder configured" "ERROR"
     return 1
     fi
 
@@ -30,19 +62,22 @@ Test-Config() {
     mountpoint=$(findmnt -rn -S "UUID=$uuid" -o TARGET)
 
     if [[ -z "$mountpoint" ]]; then
-        echo "Backup drive is not connected"
+        Get-String "backup.notconnected"
+        Write-Log "Backup drive is not connected" "ERROR"
         return 1
     fi
 
     if (( source_count == 0 )); then
-        echo "No sources configured"
+        Get-String "backup.nosources"
+        Write-Log "No sources configured" "ERROR"
         return 1
     fi
 
     while IFS= read -r source
     do
         if [[ ! -e "$source" ]]; then
-            echo "Source not found : $source"
+            echo "$(Get-String "backup.notfound") : $source"
+            Write-Log "Source not found : $source" "ERROR"
             return 1
         fi
     done < <(jq -r '.sources[]' <<< "$config")
@@ -51,6 +86,22 @@ Test-Config() {
 }
 
 
+# SYNOPSIS
+# Builds the destination path for the current backup
+#
+# DESCRIPTION
+# Creates a backup path using the configured backup drive and folder
+# The path is organized by year, month, day
+#
+# PARAMETER Config
+# The configuration file containing the backup drive and folder
+#
+# EXAMPLE
+# Get-BackupPath $config
+#
+# OUTPUTS
+# echo
+#
 Get-BackupPath() {
     local config="$1"
 
@@ -64,7 +115,8 @@ Get-BackupPath() {
     mountpoint=$(findmnt -rn -S "UUID=$uuid" -o TARGET)
 
     if [[ -z "$mountpoint" ]]; then
-        echo "Backup drive is not mounted"
+        Get-String "backup.notmounted"
+        Write-Log "Backup drive not connected" "ERROR"
         return 1
     fi
 
@@ -81,26 +133,56 @@ Get-BackupPath() {
 }
 
 
+# SYNOPSIS
+# Create the backup destination directory
+#
+# DESCRIPTION
+# Creates the specified backup directory if it does not already exist
+# If the directory already exist no changes are made
+#
+# PARAMETER Path
+# The path of the backup directory to create
+#
+# EXAMPLE
+# Set-BackupPath "D:\Backup\2026\08\Backup_2026_08_29"
+#
+# OUTPUTS
+# None
+#
 Set-BackupPath() {
     local path="$1"
 
     if [[ ! -d "$path" ]]; then
 
         if ! mkdir -p "$path"; then
-            echo "Failed to create backup path : $path"
+            echo "$(Get-String "backup.failedcreate") : $path"
+            Write-Log "Failed to create backup path : $path" "ERROR"
             return 1
         fi
 
-        echo "Created backup path : $path"
+        echo "$(Get-String "backup.createbackup") : $path"
+        Write-Log "Created backup path : $path" "SUCCESS"
 
     else
-
-        echo "Backup path already exists : $path"
-
+        echo "$(Get-String "backup.alreadycreate") : $path"
+        Write-Log "Backup path already exists: $path" "ERROR"
     fi
 }
 
 
+# SYNOPSIS
+# Creates a temporary directory for the backup process
+#
+# DESCRIPTION
+# Removes any existing temporary folder and creates a new one
+# The resolved path of the temp folder is returned
+#
+# EXAMPLE
+# Set-TempFolder
+#
+# OUTPUTS
+# None
+#
 Set-TempFolder() {
     local script_dir
     script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -112,24 +194,37 @@ Set-TempFolder() {
     fi
 
     if ! mkdir -p "$temp_path"; then
-        echo "Failed to create temporary folder" >&2
+        Get-String "backup.failedtemp"
+        Write-Log "Failed to create temp folder" "ERROR"
         return 1
     fi
-
-    printf '%s\n' "$temp_path"
 }
 
 
+# SYNOPSIS
+# Starts the backup process
+#
+# DESCRIPTION
+# Validates the configuration, creates a temp folder and the backup destination,
+# compresses the sources copies the archives and cleans the temp files
+#
+# The backup process stops if configuration validation, compression
+# or file copying fails
+#
+# EXAMPLE
+# Start-Backup
+#
+# OUTPUTS
+# None
+#
 Start-Backup() {
-    echo
-    echo "Starting backup..."
+    Write-Log "Starting Backup" "INFO"
+    Get-String "backup.startbackup"
     echo
 
     local config
 
     if ! config=$(Test-Config); then
-        echo
-        echo "Backup cancelled."
         return 1
     fi
 
@@ -138,7 +233,6 @@ Start-Backup() {
     temp_path=$(Set-TempFolder)
 
     if [[ -z "$temp_path" ]]; then
-        echo "Failed to create temporary folder"
         return 1
     fi
 
@@ -158,8 +252,8 @@ Start-Backup() {
         return 1
     fi
 
-    echo
-    echo "Backup destination :"
+    Write-Log "Backup Destination : $backup_path.zip" "INFO"
+    Get-String "backup.destination"
     echo "  $backup_path.zip"
     echo
 
@@ -168,7 +262,8 @@ Start-Backup() {
     )
 
     if ! Compress-Backup "$temp_path" "${sources[@]}"; then
-        echo "Backup failed during compression"
+        Write-Log "Backup failed during compression" "ERROR"
+        Get-String "backup.failedcompression"
         rm -rf "$temp_path"
         return 1
     fi
@@ -182,17 +277,20 @@ Start-Backup() {
     )
 
     if [[ -z "$final_archive" || ! -f "$final_archive" ]]; then
-        echo "Backup failed during final compression"
+        Write-Log "Backup failed during final compression" "ERROR"
+        Get-String "backup.failedfinalcompression"
         rm -rf "$temp_path"
         return 1
     fi
 
     echo
-    echo "Copying backup..."
+    Write-Log "Copying Backup" "INFO"
+    Get-String "backup.copy"
     echo
 
     if ! cp "$final_archive" "$backup_parent/"; then
-        echo "Backup failed during copy"
+        Write-Log "Backup failed during copy" "ERROR"
+        Get-String "backup.failedcopy"
         rm -rf "$temp_path"
         rm -f "$final_archive"
         return 1
@@ -202,10 +300,10 @@ Start-Backup() {
     rm -f "$final_archive"
 
     echo
-    echo "Backup completed successfully."
+    Write-Log "Backup Completed" "SUCCESS"
+    Get-String "backup.completed"
     echo
 }
-
 
 
 
