@@ -1,0 +1,118 @@
+{
+  "main": {
+    "startBackup": "Lancer Backup",
+    "config": "Configurations",
+    "lang": "Options langues",
+    "exit": "Quitter",
+    "choice": "Entrer votre choix (1-4)",
+    "invalid": "Choix invalide. Merci de réessayer..."
+  },
+  "configmenu": {
+    "view": "Voir la configuration actuelle",
+    "drive": "Options du disque de backup",
+    "source": "Options des sources",
+    "back": "Retour",
+    "choice": "Entrer votre choix (1-4)",
+    "invalid": "Choix invalide. Merci de réessayer..."
+  },
+  "backmenu": {
+    "view": "Voir le disque actuellement sélectionné",
+    "changedrive": "Changer le disque de backup",
+    "changefolder": "Changer le dossier de backup",
+    "back": "Retour",
+    "choice": "Entrer votre choix (1-4)",
+    "invalid": "Choix invalide. Merci de réessayer..."
+  },
+  "sourcemenu": {
+    "view": "Voir les dossiers sélectionnés",
+    "addnew": "Ajouter un nouveau dossier",
+    "remove": "Enlever un dossier",
+    "back": "Retour",
+    "choice": "Entrer votre choix (1-4)",
+    "invalid": "Choix invalide. Merci de réessayer..."
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "Anglais",
+    "back": "Retour",
+    "choice": "Entrer votre choix (1-3)",
+    "invalid": "Choix invalide. Merci de réessayer..."
+  },
+  "source": {
+    "configerror": "Echec du chargement du fichier de configuration",
+    "nosources": "Il n'y a pas de sources configurées",
+    "addinvalid": "Chemin invalide Merci de réessayer..",
+    "addnotexist": "Le chemin n'existe pas. Merci de réessayer..",
+    "addduplicate": "Ce dossier est déjà dans la liste",
+    "failedsave": "Echec lors de la sauvegarde",
+    "addsuccess": "Dossier ajouté avec succès",
+    "deletenosources": "Entrer le numéro du dossier à supprimer",
+    "deleteinvalid": "Numéro invalide. Merci de réessayer..",
+    "deletesuccess": "Dossier supprimé avec succès"
+  },
+  "drive": {
+    "configfailed": "Echec du chargement du fichier de configuration",
+    "nodrive": "Il n'y a pas d'espace de backup configuré",
+    "drivename": "Nom",
+    "driveuuid": "UUID",
+    "drivesize": "Taille",
+    "notfound": "Aucun espace de stockage n'a été trouvé",
+    "choice": "Entrer le numéro de l'espace de backup souhaité",
+    "invalidchoice": "Numéro invalide. Merci de réessayer..",
+    "cantuuid": "Echec lors de la récupération de l'UUID",
+    "driveselected": "Selectionné",
+    "drivemounted": "Point de montage",
+    "savefailed": "Echec lors de la sauvegarde des changements",
+    "drivesuccess": "Espace de backup ajouté avec succès",
+    "currentfolder": "Dossier de backup actuel",
+    "folderchoice": "Entrer le nouveau nom du dossier (ou laisser vide pour garder l'actuel)",
+    "folderchange": "Dossier de backup changé avec succès"
+  },
+  "backup": {
+    "failedload": "Echec du chargement du fichier de configuration",
+    "nobackupdrive": "Il n'y a pas de disque de backup configuré",
+    "nobackupfolder": "Il n'y a pas de fichier de backup configuré",
+    "notconnected": "Le disque de backup n'est pas connecté",
+    "nosources": "Il n'y a pas de sources configurées",
+    "notfound": "La source suivante n'a pas été trouvée",
+    "failedcreate": "Echec de la création du chemin temporaire",
+    "createbackup": "Création du chemin de backup",
+    "alreadycreate": "Le chemin de backup est déjà créé",
+    "failedtemp": "Echec de la création du dossier temporaire",
+    "startbackup": "Début de la backup",
+    "cancelled": "Arret de la backup",
+    "failedtempfolder": "Echec de la création du dossier temporaire",
+    "destination": "Destination de la backup",
+    "failecompression": "Echec de la backup lors de la compression",
+    "failedfinalcompression": "Echec de la backup lors de la compression finale",
+    "failedcopy": "Echec de la copie",
+    "completed": "Backup complétée avec succès"
+  },
+  "compress": {
+    "nosource": "La source n'a pas été trouvée",
+    "compress": "Compression en cours",
+    "failed": "Echec de compression du dossier suivant",
+    "success": "Compression terminée avec succès",
+    "backupfailed": "Echec de la compression de la backup",
+    "backupsuccess": "Succès de la compression de la backup",
+    "foldernotfound": "Dossier sources introuvable",
+    "foldercreate": "Création de l'archive de la backup finale",
+    "folderfailed": "Echec de création de l'archive de la backup finale",
+    "foldersuccess": "Succès de la compression finale"
+  },
+  "config": {
+    "failedload": "Echec du chargement du fichier de configuration",
+    "currentconfig": "Configuration actuelle",
+    "backupdrive": "Espace de backup",
+    "nobackupdrive": "  (Aucun espace configuré)",
+    "uuid": "UUID",
+    "name": "Nom",
+    "size": "Taille",
+    "folder": "Dossier de backup",
+    "sources": "Sources",
+    "nosources": "  (Aucunes sources configurées)",
+    "lang": "Langue",
+    "saveerror": "Erreur lors de la sauvegarde de la configuration",
+    "savesuccess": "Configuration sauvegardée avec succès"
+  }
+}

@@ -239,14 +239,14 @@ Show-SourceMenu() {
         echo ""
         echo "=========================="
 
-        echo "1. View"
-        echo "2. Add a new source"
-        echo "3. Remove a source"
-        echo "4. Back"
+        echo "1. $(Get-String "sourcemenu.view")"
+        echo "2. $(Get-String "sourcemenu.addnew")"
+        echo "3. $(Get-String "sourcemenu.remove")"
+        echo "4. $(Get-String "sourcemenu.back")"
 
         echo ""
 
-        read -rp "Select an option (1-4) : " choice
+        read -rp "$(Get-String "sourcemenu.choice") : " choice
 
         case "$choice" in
             1)

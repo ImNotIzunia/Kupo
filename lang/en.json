@@ -1,7 +1,119 @@
 {
   "main": {
     "startBackup": "Starting Backup",
-    "": ""
+    "config": "Configurations",
+    "lang": "Languages settings",
+    "exit": "Exit",
+    "choice": "Enter your choice (1-4)",
+    "invalid": "Invalid choice. Please try again.."
+  },
+  "configmenu": {
+    "view": "View current configuration",
+    "drive": "Backup drive settings",
+    "source": "Sources settings",
+    "back": "Back",
+    "choice": "Enter your choice (1-4)",
+    "invalid": "Invalid choice. Please try again.."
+  },
+  "backmenu": {
+    "view": "View current backup drive selected",
+    "changedrive": "Change backup drive",
+    "changefolder": "Change backup folder",
+    "back": "Back",
+    "choice": "Enter your choice (1-4)",
+    "invalid": "Invalid choice. Please try again.."
+  },
+  "sourcemenu": {
+    "view": "View all selected folders",
+    "addnew": "Add new folder",
+    "remove": "Remove a folder",
+    "back": "Back",
+    "choice": "Enter your choice (1-4)",
+    "invalid": "Invalid choice. Please try again.."
+  },
+  "lang": {
+    "fr": "French",
+    "en": "English",
+    "choice": "Enter your choice (1-3)",
+    "back": "Back",
+    "invalid": "Invalid choice. Please try again.."
+  },
+  "source": {
+    "configerror": "Failed to load configuration",
+    "nosources": "There is no folders configured",
+    "addinvalid": "Invalid path. Please try again...",
+    "addnotexist": "Path does not exist. Please try again...",
+    "addduplicate": "This folder already exists in the list",
+    "failedsave": "Failed to add the folder",
+    "addsuccess": "Folder added successfully",
+    "deletenosources": "There is no source to remove",
+    "deleteinvalid": "Invalid number. Please try again...",
+    "deletesuccess": "Folder removed successfully"
+  },
+  "drive": {
+    "configfailed": "Failed to load configuration",
+    "nodrive": "There is no backup drive configured",
+    "drivename": "Name",
+    "driveuuid": "UUID",
+    "drivesize": "Size",
+    "notfound": "There is no storage drive founded",
+    "choice": "Enter the number of the backup drive",
+    "invalidchoice": "Invalid number. Please try again...",
+    "cantuuid": "Failed to retrieve the UUID",
+    "driveselected": "Selected",
+    "drivemounted": "Mountpoint",
+    "savefailed": "Failed to save the selected drive",
+    "drivesuccess": "Backup drive added successfully",
+    "currentfolder": "Current backup folder",
+    "folderchoice": "Enter the new backup name (or leave empty to keep current)",
+    "folderchange": "Backup folder updated successfully"
+  },
+  "backup": {
+    "failedload": "Failed to load configuration",
+    "nobackupdrive": "No backup drive configured",
+    "nobackupfolder": "No backup folder configured",
+    "notconnected": "Backup drive is not connected",
+    "nosources": "No sources configured",
+    "notfound": "Source not found",
+    "failedcreate": "Failed to create backup path",
+    "createbackup": "Created backup path",
+    "alreadycreate": "Backup path already exists",
+    "failedtemp": "Failed to create temp folder",
+    "startbackup": "Starting backup",
+    "cancelled": "Backup cancelled",
+    "failedtempfolder": "Failed to create temporary folder",
+    "destination": "Backup Destination",
+    "failecompression": "Backup failed during compression",
+    "failedfinalcompression": "Backup failed during final compression",
+    "failedcopy": "Backup failed during copy",
+    "completed": "Backup Completed"
+  },
+  "compress": {
+    "nosource": "Source not found",
+    "compress": "Compressing",
+    "failed": "Failed to compress following folder",
+    "success": "Compression completed",
+    "backupfailed": "Backup Compression Failed",
+    "backupsuccess": "Backup Compression Success",
+    "foldernotfound": "Source folder not found",
+    "foldercreate": "Creating final backup archive...",
+    "folderfailed": "Failed to create final backup archive",
+    "foldersuccess": "Final compression completed"
+  },
+  "config": {
+    "failedload": "Failed to load configuration",
+    "currentconfig": "Current Configuration",
+    "backupdrive": "Backup Drive",
+    "nobackupdrive": "  (No backup drive configured)",
+    "uuid": "UUID",
+    "name": "Name",
+    "size": "Size",
+    "folder": "Backup Folder",
+    "sources": "Sources",
+    "nosources": " (No sources configured)",
+    "lang": "Language",
+    "saveerror": "Error during the save of the configuration",
+    "savesuccess": "Configuration saved with success"
   }
 }
 

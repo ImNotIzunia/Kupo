@@ -66,7 +66,7 @@ Compress-Source() {
     return 1
     fi
     
-    echo "$(Get-String "compress.sucess") : $source_name.zip"
+    echo "$(Get-String "compress.success") : $source_name.zip"
     Write-Log "Compression completed : $source_name.zip" "SUCCESS"
     
     printf '%s\n' "$archive_path"
@@ -101,7 +101,7 @@ Compress-Backup() {
     local current=0
     
     if (( total == 0 )); then
-        Get-String "compress.nosources"
+        Get-String "compress.nosource"
         Write-Log "No sources to compress" "ERROR"
         return 1
     fi
@@ -124,7 +124,7 @@ Compress-Backup() {
     done
     
     echo
-    Get-String "compress.backupsucess"
+    Get-String "compress.backupsuccess"
     Write-Log "Backup Compression Success" "SUCCESS"
     
     return 0

@@ -116,7 +116,7 @@ Get-BackupPath() {
     mountpoint=$(findmnt -rn -S "UUID=$uuid" -o TARGET)
 
     if [[ -z "$mountpoint" ]]; then
-        Get-String "backup.notmounted"
+        Get-String "backup.notconnected"
         Write-Log "Backup drive not connected" "ERROR"
         return 1
     fi

@@ -173,7 +173,7 @@ Set-BackupDrive() {
 
     echo "$(Get-String "drive.driveselected") : ${label:-Sans nom}"
     echo "  $(Get-String "drive.driveuuid") : $uuid"
-    echo "  $(Get-String "drive.drivetaille") : $size"
+    echo "  $(Get-String "drive.drivesize") : $size"
     echo "  $(Get-String "drive.drivemounted") : $mountpoint"
 
     if ! config=$(
