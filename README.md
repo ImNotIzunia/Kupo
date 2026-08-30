@@ -1,6 +1,6 @@
 # Kupo
 
-[![CI](https://github.com/ImNotIzunia/Kupo/actions/workflows/ci.yml/badge.svg)](https://github.com/ImNotIzunia/Moogle/actions/workflows/ci.yml)
+[![CI](https://github.com/ImNotIzunia/Kupo/actions/workflows/ci.yml/badge.svg)](https://github.com/ImNotIzunia/Kupo/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENCE)
 [![Bash](https://img.shields.io/badge/Bash-4.4%2B-4EAA25.svg)](https://www.gnu.org/software/bash/)
 
