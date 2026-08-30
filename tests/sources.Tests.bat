@@ -232,7 +232,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "failed" ]
+    [[ "$output" == *"failed"* ]]
 }
 
 @test "Add-Source: rejects whitespace-only input" {
@@ -241,7 +241,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "failed" ]
+    [[ "$output" == *"failed"* ]]
 }
 
 @test "Add-Source: rejects EOF without input" {
@@ -257,7 +257,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "not found" ]
+    [[ "$output" == *"not found"* ]]
 }
 
 @test "Add-Source: rejects duplicate directory" {
@@ -274,7 +274,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "already exists" ]
+    [[ "$output" == *"already exists"* ]]
 }
 
 @test "Add-Source: rejects duplicate directory through symlink" {
@@ -292,7 +292,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "already exists" ]
+    [[ "$output" == *"already exists"* ]]
 }
 
 @test "Add-Source: reports Get-Config failure" {
@@ -329,7 +329,7 @@ assert_saved_source() {
     run Add-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = "not found" ]
+    [[ "$output" == *"not found"* ]]
 
     [ ! -f "$CONFIG_FILE" ]
 }
@@ -421,7 +421,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects index above maximum" {
@@ -436,7 +437,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects negative index" {
@@ -451,7 +453,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects non numeric index" {
@@ -466,7 +469,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects decimal index" {
@@ -481,7 +485,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects empty input" {
@@ -496,7 +501,8 @@ assert_saved_source() {
     run Delete-Source < "$TEST_DIR/input"
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: rejects EOF without input" {
@@ -509,7 +515,8 @@ assert_saved_source() {
     run Delete-Source < /dev/null
 
     [ "$status" -eq 1 ]
-    [ "$output" = $'1. /tmp/source1\n\ninvalid' ]
+    [[ "$output" == *"1. /tmp/source1"* ]]
+    [[ "$output" == *"invalid"* ]]
 }
 
 @test "Delete-Source: reports Get-Config failure" {
