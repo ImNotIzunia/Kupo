@@ -147,21 +147,32 @@ Set-BackupDrive() {
 
     echo
 
-    read -rp "$(Get-String "drive.choice") : " choice
+    local choice
+    local index
 
-    if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
-        Get-String "drive.invalidchoice"
-        Write-Log "Invalid number for selecting backup drive" "ERROR"
-        return 1
-    fi
+    while true; do
+        if ! read -rp "$(Get-String "drive.choice") : " choice; then
+            Get-String "drive.invalidchoice"
+            Write-Log "No choice provided for selecting backup drive" "ERROR"
+            return 1
+        fi
 
-    local index=$((choice - 1))
+        if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+            Get-String "drive.invalidchoice"
+            Write-Log "Invalid number for selecting backup drive" "ERROR"
+            continue
+        fi
 
-    if (( index < 0 || index >= ${#drives[@]} )); then
-        Get-String "drive.invalidchoice"
-        Write-Log "Invalid number for selecting backup drive" "ERROR"
-        return 1
-    fi
+        index=$((choice - 1))
+
+        if (( index < 0 || index >= ${#drives[@]} )); then
+            Get-String "drive.invalidchoice"
+            Write-Log "Invalid number for selecting backup drive" "ERROR"
+            continue
+        fi
+
+        break
+    done
 
     IFS="|" read -r name size label uuid mountpoint <<< "${drives[$index]}"
 
