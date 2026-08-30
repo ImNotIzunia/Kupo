@@ -101,7 +101,7 @@ Compress-Backup() {
     local current=0
     
     if (( total == 0 )); then
-        Get-String "compress.nosource"
+        Get-String "compress.nosources"
         Write-Log "No sources to compress" "ERROR"
         return 1
     fi

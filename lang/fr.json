@@ -33,7 +33,7 @@
   },
   "lang": {
     "fr": "Français",
-    "en": "Anglais",
+    "eng": "Anglais",
     "back": "Retour",
     "choice": "Entrer votre choix (1-3)",
     "invalid": "Choix invalide. Merci de réessayer..."
@@ -52,10 +52,11 @@
   },
   "drive": {
     "configfailed": "Echec du chargement du fichier de configuration",
+    "founddrive": "Espace de backup disponible",
     "nodrive": "Il n'y a pas d'espace de backup configuré",
     "drivename": "Nom",
     "driveuuid": "UUID",
-    "drivesize": "Taille",
+    "drivetaille": "Taille",
     "notfound": "Aucun espace de stockage n'a été trouvé",
     "choice": "Entrer le numéro de l'espace de backup souhaité",
     "invalidchoice": "Numéro invalide. Merci de réessayer..",
@@ -73,6 +74,7 @@
     "nobackupdrive": "Il n'y a pas de disque de backup configuré",
     "nobackupfolder": "Il n'y a pas de fichier de backup configuré",
     "notconnected": "Le disque de backup n'est pas connecté",
+    "notmounted": "Le disque de backup n'est pas monté",
     "nosources": "Il n'y a pas de sources configurées",
     "notfound": "La source suivante n'a pas été trouvée",
     "failedcreate": "Echec de la création du chemin temporaire",

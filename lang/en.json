@@ -33,7 +33,7 @@
   },
   "lang": {
     "fr": "French",
-    "en": "English",
+    "eng": "English",
     "choice": "Enter your choice (1-3)",
     "back": "Back",
     "invalid": "Invalid choice. Please try again.."
@@ -52,10 +52,11 @@
   },
   "drive": {
     "configfailed": "Failed to load configuration",
+    "founddrive": "Available drives",
     "nodrive": "There is no backup drive configured",
     "drivename": "Name",
     "driveuuid": "UUID",
-    "drivesize": "Size",
+    "drivetaille": "Size",
     "notfound": "There is no storage drive founded",
     "choice": "Enter the number of the backup drive",
     "invalidchoice": "Invalid number. Please try again...",
@@ -75,6 +76,7 @@
     "notconnected": "Backup drive is not connected",
     "nosources": "No sources configured",
     "notfound": "Source not found",
+    "notmounted": "Backup drive is not mounted",
     "failedcreate": "Failed to create backup path",
     "createbackup": "Created backup path",
     "alreadycreate": "Backup path already exists",

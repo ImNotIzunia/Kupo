@@ -20,12 +20,12 @@ setup() {
     Get-String() {
         case "$1" in
             compress.compress)       echo "Compressing" ;;
-            compress.sucess)         echo "Compression completed" ;;
+            compress.success)        echo "Compression completed" ;;
             compress.failed)         echo "Failed to compress" ;;
             compress.nosource)       echo "Source not found" ;;
             compress.nosources)      echo "No sources to compress" ;;
             compress.backupfailed)   echo "Backup compression failed" ;;
-            compress.backupsucess)   echo "All sources compressed" ;;
+            compress.backupsuccess)  echo "All sources compressed" ;;
             compress.foldernotfound) echo "Source folder not found" ;;
             compress.foldercreate)   echo "Creating final backup archive..." ;;
             compress.folderfailed)   echo "Failed to create final backup archive" ;;
