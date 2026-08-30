@@ -46,6 +46,8 @@
     "addduplicate": "This folder already exists in the list",
     "failedsave": "Failed to add the folder",
     "addsuccess": "Folder added successfully",
+    "addprompt": "Enter the path of a new source",
+    "deletechoice": "Enter the number for removing a source",
     "deletenosources": "There is no source to remove",
     "deleteinvalid": "Invalid number. Please try again...",
     "deletesuccess": "Folder removed successfully"

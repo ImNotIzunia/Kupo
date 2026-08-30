@@ -46,7 +46,9 @@
     "addduplicate": "Ce dossier est déjà dans la liste",
     "failedsave": "Echec lors de la sauvegarde",
     "addsuccess": "Dossier ajouté avec succès",
-    "deletenosources": "Entrer le numéro du dossier à supprimer",
+    "addprompt": "Entrer le chemin vers le dossier source",
+    "deletechoice": "Entrer le numéro du dossier à supprimer",
+    "deletenosources": "Il n'y a pas de source à supprimer",
     "deleteinvalid": "Numéro invalide. Merci de réessayer..",
     "deletesuccess": "Dossier supprimé avec succès"
   },
