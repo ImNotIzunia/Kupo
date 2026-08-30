@@ -55,8 +55,6 @@ Get-Source() {
 # Prompts the user for a folder path then validates that the path exists
 # and adds it to the configured backup sources
 # Duplicate paths are not added
-# Re-prompts on invalid, empty, missing, or duplicate paths, until a valid
-# path is entered or input runs out (EOF)
 #
 # EXAMPLE
 # Add-Source
@@ -76,39 +74,33 @@ Add-Source() {
         return 1
     fi
 
-    while true; do
-        if ! IFS= read -rp "$(Get-String "source.addprompt") : " path; then
-            Get-String "source.addinvalid"
-            Write-Log "No path provided for the folder to add" "ERROR"
-            return 1
-        fi
+    if ! IFS= read -rp "$(Get-String "source.addprompt") : " path; then
+        path=""
+    fi
 
-        if [[ -z "${path//[[:space:]]/}" ]]; then
-            Get-String "source.addinvalid"
-            Write-Log "Invalid path to the folder to add" "ERROR"
-            continue
-        fi
+    if [[ -z "${path//[[:space:]]/}" ]]; then
+        Get-String "source.addinvalid"
+        Write-Log "Invalid path to the folder to add" "ERROR"
+        return 1
+    fi
 
-        if [[ ! -d "$path" ]]; then
-            Get-String "source.addnotexist"
-            Write-Log "Path to the folder does not exist" "ERROR"
-            continue
-        fi
+    if [[ ! -d "$path" ]]; then
+        Get-String "source.addnotexist"
+        Write-Log "Path to the folder does not exist" "ERROR"
+        return 1
+    fi
 
-        if ! resolved_path="$(cd -- "$path" 2>/dev/null && pwd -P)"; then
-            Get-String "source.addnotexist"
-            Write-Log "Path to the folder does not exist" "ERROR"
-            continue
-        fi
+    if ! resolved_path="$(cd -- "$path" 2>/dev/null && pwd -P)"; then
+        Get-String "source.addnotexist"
+        Write-Log "Path to the folder does not exist" "ERROR"
+        return 1
+    fi
 
-        if jq -e --arg path "$resolved_path" '.sources | index($path)' <<<"$config" >/dev/null; then
-            Get-String "source.addduplicate"
-            Write-Log "Folder already exists in the list" "WARNING"
-            continue
-        fi
-
-        break
-    done
+    if jq -e --arg path "$resolved_path" '.sources | index($path)' <<<"$config" >/dev/null; then
+        Get-String "source.addduplicate"
+        Write-Log "Folder already exists in the list" "WARNING"
+        return 1
+    fi
 
     new_config=$(
         jq --arg path "$resolved_path" \
@@ -132,8 +124,7 @@ Add-Source() {
 # DESCRIPTION
 # Displays the currently configured backup list and asks the user to select by the number
 # The selected folder is removed from the configuration and the updated configuration is saved
-# Re-prompts on invalid or out of range choices, until a valid choice is
-# entered or input runs out (EOF)
+# If the selection is invalid nothing is made
 #
 # EXAMPLE
 # Remove-Source
@@ -164,21 +155,15 @@ Delete-Source() {
     # Display the configured folders and asking for selection
     Get-Source
 
-    while true; do
-        if ! IFS= read -rp "$(Get-String "source.deletechoice") : " choice; then
-            Get-String "source.deleteinvalid"
-            Write-Log "No choice provided for deleting source folder" "ERROR"
-            return 1
-        fi
+    if ! IFS= read -rp "$(Get-String "source.deletechoice") : " choice; then
+        choice=""
+    fi
 
-        if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > source_count )); then
-            Get-String "source.deleteinvalid"
-            Write-Log "Invalid number for deleting source folder" "ERROR"
-            continue
-        fi
-
-        break
-    done
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > source_count )); then
+        Get-String "source.deleteinvalid"
+        Write-Log "Invalid number for deleting source folder" "ERROR"
+        return 1
+    fi
 
     # Rebuild the source list without the selected folder
     new_config=$(jq --argjson index "$((choice - 1))" \
